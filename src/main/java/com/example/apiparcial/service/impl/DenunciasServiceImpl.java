@@ -6,16 +6,22 @@ import com.example.apiparcial.service.DenunciasService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
+
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
 @Service
 public class DenunciasServiceImpl implements DenunciasService {
+
     @Autowired
     private DenunciasRepository denunciaRepository;
 
     @Override
     public Denuncias registrar(Denuncias denuncia) {
+        if (denuncia.getFecha() == null) {
+            denuncia.setFecha(LocalDateTime.now());
+        }
         denuncia.setEstado(1);
         return denunciaRepository.save(denuncia);
     }
@@ -28,7 +34,7 @@ public class DenunciasServiceImpl implements DenunciasService {
 
     @Override
     public Optional<Denuncias> obtenerPorId(Integer id) {
-        return denunciaRepository.findById(Long.valueOf((id)));
+        return denunciaRepository.findById(id);
     }
 
     @Override
@@ -38,7 +44,7 @@ public class DenunciasServiceImpl implements DenunciasService {
 
     @Override
     public Denuncias atenderDenuncia(Integer id) {
-        return denunciaRepository.findById(Long.valueOf(id)).map(denuncia -> {
+        return denunciaRepository.findById(id).map(denuncia -> {
             denuncia.setEstado(0);
             return denunciaRepository.save(denuncia);
         }).orElse(null);

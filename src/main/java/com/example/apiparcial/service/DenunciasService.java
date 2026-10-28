@@ -1,11 +1,10 @@
 package com.example.apiparcial.service;
 
 import com.example.apiparcial.entity.Denuncias;
-import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
 
-@Service
+// NO lleva @Service aquí, solo en la implementación
 public interface DenunciasService {
     Denuncias registrar(Denuncias denuncia);
     List<Denuncias> listarPaginado(int offset, int limit);
